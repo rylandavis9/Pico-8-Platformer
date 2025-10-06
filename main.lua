@@ -3,8 +3,8 @@ player = {}
 function _init()
 		
   init_player()
-  gravity = .15
-		friction = .85
+  gravity = .175
+		friction = .80
 		terminalv = 3
 		current_frame = 1
 
@@ -17,7 +17,7 @@ function init_player()
   player.vx = 0         
   player.vy = .1
   player.jump = -3         
-  player.speed = 2            
+  player.speed = 2.25            
   player.sprite = 1        
 		player.h = 8
 		player.w = 8 
@@ -96,6 +96,16 @@ function checkpoint()
     end
 end
 
+function booster()
+				if is_colliding(player.x + player.vx, player.y, player.w, player.h, 4) then
+        return true
+    end
+
+   	if  is_colliding(player.x, player.y + player.vy, player.w, player.h, 4) then
+        return true
+    end
+
+end
 function handle_death()
 				player.x = player.homex
 				player.y = player.homey
@@ -123,6 +133,9 @@ function _update()
   		if btnp(2) and player.grounded then
         player.vy = player.jump
         player.grounded = false
+    end
+    if btnp(3) and not player.grounded then
+        player.vy += 1
     end
 
     if abs(player.vx) < .05 then player.vx = 0 end
@@ -160,7 +173,10 @@ function _update()
 								player.homex = player.x
 								player.homey = player.y
 				end 
-				handle_anim()		
+				handle_anim()
+				if booster() then
+				    player.vy -= .5
+				end		
 end
 
 function _draw()
