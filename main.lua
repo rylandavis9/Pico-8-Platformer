@@ -61,7 +61,6 @@ function handle_anim()
         player.facing = -1
     end
 
-    
     if player.vx != 0 and player.vy == 0 then
         player.frame_timer += player.anim_speed
         local frame_index = flr(player.frame_timer) % #player.walk_anim + 1
@@ -71,9 +70,8 @@ function handle_anim()
     elseif player.vy > 0 then
     				current_frame = player.down_anim
     else
-        
         current_frame = 1
-        player.frame_timer = 0 -- reset timer for next movement
+        player.frame_timer = 0
     end
 end
 
@@ -129,7 +127,7 @@ function _update()
 
     if abs(player.vx) < .05 then player.vx = 0 end
     
-    player.vy += gravity -- a lower, more typical gravity value for smooth jumping
+    player.vy += gravity
     
  		 if abs(player.vx) > player.speed then
       		player.vx = player.speed * sgn(player.vx)
@@ -141,7 +139,6 @@ function _update()
     if not is_colliding(player.x + player.vx, player.y, player.w, player.h, 1) then
         player.x += player.vx
     else
-        -- stop horizontal movement on collision
         player.vx = 0
     end
 
@@ -171,5 +168,6 @@ function _draw()
     handle_camera()
     map(0, 0, 0, 0, player.x + 8, player.y + 8)
   
+    
     spr(current_frame, player.x, player.y, 1, 1, player.facing == -1)
 end
